@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> le pain au chocolat est né supérieur face aut gueux de chocolatines</title>
+    <h2> vérification d'une expression littérale </h2>
+
+</head>
+
+<body>
+
+    <link rel="stylesheet" href="index_2.css">
+    <button class="boutton" onclick=maFonction()>vérifier</button>
+    </br>
+    </br>
+    <div id=""></div>
+    <form action="" method="post">
+        <label for="saisie"></label>
+        <input type="expression_littérales" id="calcul_littéral" name="calcul_littéral" placeholder="calcul_littéral"
+            required>
+    </form>
+    </br>
+    </br>
+    <div id="reponse"> la réponse </div>
+
+
+
+
+
+    <script>
+
+        function change_texte(texte) {
+            fetch('http://localhost:8080/test' + texte, { mode: "cors" })
+                .then(r => {
+                    console.log('La réponse', r);
+                    r.text()
+                        .then(texte => {
+                            console.log('Le texte', texte);
+                            const div = document.querySelector("div");
+                            div.textContent = texte;
+                        });
+                });
+
+
+        }
+
+
+
+        function maFonction() {
+
+            var valeurSaisie = document.getElementById("calcul_littéral").value;
+
+            console.log("La valeur saisie est : " + valeurSaisie);
+
+            fetch('http://localhost:8080/test/' + valeurSaisie, { mode: "cors" })
+                .then(r => {
+                    console.log('La réponse', r);
+                    r.text()
+                        .then(texte => {
+                            console.log('Le texte', texte);
+                            document.getElementById("reponse").innerHTML = texte;
+                        });
+                });
+
+        }
+    </script>
+</body>
+
+</html>
