@@ -29,4 +29,4 @@ public class TestNouvelleAPI {
         return chaine.matches("[0-9a-z()+\\-*/]+");
     }
 
-}
+}    

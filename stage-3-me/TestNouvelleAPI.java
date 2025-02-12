@@ -18,6 +18,15 @@ public class TestNouvelleAPI {
         return res;
     }
 
+    @Path("pouet/{param}")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String djawen(String param) {
+        String res = "contient que des caracteres autorisés ? ";
+        res += neContientQueDesCaracteresAutorises(param);
+        return res;
+    }
+
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String hello() {
