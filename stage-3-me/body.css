@@ -1,0 +1,25 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+.content {
+    display: flex;
+    align-items: flex-start;
+}
+
+.image-left {
+    margin-right: 20px;
+    max-width: 200px;
+    width: 100%;
+    height: auto;
+}
+
+.text {
+    max-width: 600px;
+}
+
+h1, h2, p {
+    margin: 20px 0;
+}

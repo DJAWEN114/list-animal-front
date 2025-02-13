@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page avec Image et Formulaire</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #87CEEB;
+            /* Bleu ciel */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .content {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: fit-content;
+            max-width: 90%;
+            margin-bottom: 20px;
+        }
+
+        .image-left {
+            max-width: 200px;
+            margin-right: 20px;
+            border-radius: 10px;
+        }
+
+        .text {
+            max-width: 500px;
+        }
+
+        .text h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: fit-content;
+        }
+
+        .form-container h1 {
+            margin-bottom: 20px;
+        }
+
+        .form-container input[type="text"] {
+            width: calc(100% - 24px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-container button {
+            padding: px 40px;
+            border: none;
+            border-radius: 5px;
+            background-color: #333;
+            color: white;
+            cursor: pointer;
+        }
+
+        .form-container button:hover {
+            background-color: #555;
+        }
+
+        .response-container {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="content">
+        <img src="tout-savoir-sur-l-orque.jpeg" alt="Image d'un orque" class="image-left">
+        <div class="text">
+            <h2>Tout savoir sur les orques !</h2>
+            <p>Les orques, ou épaulards, sont des mammifères marins de la famille des delphinidés. Ils mesurent entre 5
+                à 10 mètres et pèsent de 3 à 5 tonnes. Habitant tous les océans, ils ont un régime diversifié allant des
+                poissons aux mammifères marins. Les orques vivent en groupes sociaux matriarcaux appelés pods.</p>
+        </div>
+    </div>
+
+        <form id="wordForm">
+            <select id="dropdown">
+                <!-- Les options seront ajoutées ici par JavaScript -->
+            </select>
+            <button type="submit">Envoyer</button>
+        </form>
+    </div>
+
+    <div id="responseContainer" class="response-container">
+        <p id="response"></p>
+    </div>
+
+
+    <script>
+
+        function maListe() {
+            fetch('http://localhost:8080/list-animal/', { mode: "cors" })
+                .then(r => {
+                    console.log('La réponse', r);
+                    r.text()
+                        .then(texte => {
+                            var tableau = texte.split(",");
+                            console.log('La liste', tableau); 
+
+                            // Sélectionne l'élément <select> dans le DOM
+                            var dropdown = document.getElementById('dropdown');
+
+                            // Boucle à travers le tableau et crée une option pour chaque élément
+                            tableau.forEach(function (animal) {
+                                var opt = document.createElement('option');
+                                opt.value = animal.trim();  // La valeur de l'option
+                                opt.textContent = animal;  // Le texte affiché pour l'option
+                               
+ dropdown.appendChild(opt);
+                            });
+                        });
+                });
+        }
+
+        maListe()
+
+
+        document.getElementById('wordForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Empêche le rechargement de la page
+            const word = document.getElementById('dropdown').value.toLowerCase(); // Prend la valeur et la convertit en minuscule
+            const responseText = document.getElementById('response');
+
+            maFonction(word);
+            // switch (word) {
+            //     case "orque":
+            //         responseText.innerText = "Les orques, également appelées épaulards, sont des mammifères marins de la famille des delphinidés. Ils se distinguent par leur coloration noire et blanche et leurs habitudes sociales complexes.";
+            //         break;
+            //     case "tigre":
+            //         responseText.innerText = "Le tigre est un grand félin de la famille des panthéridés, connu pour son pelage rayé et sa puissance.";
+            //         break;
+            //     case "lion":
+            //         responseText.innerText = "Le lion est un grand félin de la famille des panthéridés, souvent appelé roi de la jungle, et connu pour sa crinière.";
+            //         break; 
+            //    default:
+            //         responseText.innerText = "Erreur : Mot inconnu.";
+            // }
+            document.getElementById('responseContainer').style.display = "block";
+        });
+
+        function maFonction(word) {
+            var valeurSaisie = word;
+
+            console.log("La valeur saisie est : " + valeurSaisie);
+
+            fetch('http://localhost:8080/animal/' + valeurSaisie, { mode: "cors" })
+                .then(r => {
+                    console.log('La réponse', r);
+                    r.text()
+                        .then(texte => {
+                            console.log('Le texte', texte);
+                            document.getElementById('response').innerText = texte;
+                            
+                        });
+                });
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page avec Image, Texte et Table de Mots</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f8ff;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .content {
+            display: flex;
+            align-items: center;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            width: fit-content;
+            margin-bottom: 20px;
+        }
+
+        .image-left {
+            max-width: 250px;
+            margin-right: 20px;
+            border-radius: 10px;
+        }
+
+        .text {
+            max-width: 600px;
+        }
+
+        .text h2 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .text p {
+            color: #34495e;
+            line-height: 1.6em;
+        }
+
+        .table-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: fit-content;
+        }
+
+        .table-container h1 {
+            font-size: 28px;
+            color: #2980b9;
+            margin-bottom: 15px;
+        }
+
+        .table-container table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table-container th, .table-container td {
+            padding: 15px;
+            border: 1px solid #ccc;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .table-container th {
+            font-size: 18px;
+            color: #2980b9;
+        }
+
+        .table-container td {
+            cursor: pointer;
+            color: #3498db;
+            font-size: 16px;
+        }
+
+        .table-container td:hover {
+            background-color: #ecf0f1;
+            color: #2980b9;
+        }
+
+        .definition-container {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            display: none;
+        }
+
+        .definition-container p {
+            color: #7f8c8d;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <img src="tout-savoir-sur-l-orque.jpeg" alt="Image d'un orque" class="image-left">
+        <div class="text">
+            <h2>Tout savoir sur les orques !</h2>
+            <p>Les orques, ou épaulards, sont des mammifères marins de la famille des delphinidés. Ils mesurent entre 5 à 10 mètres et pèsent de 3 à 5 tonnes. Habitant tous les océans, ils ont un régime diversifié allant des poissons aux mammifères marins. Les orques vivent en groupes sociaux matriarcaux appelés pods.</p>
+        </div>
+    </div>
+
+    <script>
+        // Stocke le mot précédemment cliqué pour gérer le double clic
+        let lastClicked = null;
+
+        const definitions = {
+            'orque': "Les orques, également appelées épaulards, sont des mammifères marins de la famille des delphinidés. Ils se distinguent par leur coloration noire et blanche et leurs habitudes sociales complexes.",
+            'tigre': "Le tigre est un grand félin de la famille des panthéridés, connu pour son pelage rayé et sa puissance.",
+            'lion': "Le lion est un grand félin de la famille des panthéridés, souvent appelé roi de la jungle, et connu pour sa crinière.",
+            'chat': "Le chat est un petit mammifère carnivore domestiqué par l'homme depuis des milliers d'années. Il est connu pour sa souplesse, sa discrétion et son indépendance.",
+            'chien': "Le chien est un mammifère domestique descendant du loup, souvent qualifié de meilleur ami de l'homme. Il est fidèle, protecteur et peut être dressé pour divers rôles.",
+            'tortue': "La tortue est un reptile qui possède une carapace dure qui la protège. Elle peut vivre sur terre ou dans l'eau et a une longévité remarquable.",
+            'poisson': "Les poissons sont des animaux vertébrés aquatiques à branchies qui n'ont généralement pas de membres avec des doigts. Ils sont très diversifiés en formes et en tailles.",
+            'loup': "Le loup est un mammifère carnivore de la famille des canidés, connu pour vivre et chasser en meute. C'est l'ancêtre de tous les chiens domestiques.",
+            'chameau': "Le chameau est un grand mammifère qui vit principalement dans les déserts. Il possède une ou deux bosse(s) sur son dos qui stockent de la graisse qu'il utilise comme réserve d'énergie.",
+            'dauphin': "Le dauphin est un mammifère marin très intelligent et sociable, connu pour sa nature joueuse et son aptitude à effectuer des sauts gracieux hors de l'eau.",
+            'escargot': "L'escargot est un mollusque terrestre ou aquatique doté d'une coquille en spirale. Il se déplace lentement à l'aide d'un pied musculeux et laisse une traînée de mucus derrière lui.",
+            'requin': "Le requin est un poisson cartilagineux prédateur, connu pour ses nombreuses dents et son rôle important dans l'équilibre des écosystèmes marins."
+        };
+
+        function showDefinition(word) {
+            const definitionContainer = document.getElementById('definitionContainer');
+            const definitionText = document.getElementById('definition');
+            
+            if (lastClicked === word) {
+                definitionContainer.style.display = "none";
+                definitionText.innerText = "";
+                lastClicked = null;
+            } else {
+                definitionText.innerText = definitions[word] || "Définition non disponible.";
+                definitionContainer.style.display = "block";
+                lastClicked = word;
+            }
+        }
+    </script>
+</body>
+</html>
